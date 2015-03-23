@@ -1,6 +1,16 @@
 name := "crawler"
 
-version := "1.0"
+organization := "com.monitorjbl"
+
+version := "1.0-SNAPSHOT"
+
+publishMavenStyle := true
+
+crossPaths := false
+
+autoScalaLibrary := false
+
+publishTo := Some(Resolver.file("file",  new File(Path.userHome.absolutePath+"/.m2/repository")))
 
 scalaVersion := "2.11.6"
 

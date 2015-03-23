@@ -3,13 +3,13 @@ package com.monitorjbl.crawler
 import java.util.UUID
 
 import akka.actor.{Actor, Props, ActorSystem}
-import com.monitorjbl.crawler.actors.{DefaultHttpActor, DispatchActor}
+import com.monitorjbl.crawler.actors.{HttpActor, DispatchActor}
 import com.monitorjbl.crawler.messages.ReadUrl
 import com.monitorjbl.crawler.messages.CrawlComplete
 import com.typesafe.config.ConfigFactory
 import org.slf4j.{LoggerFactory, Logger}
 
-class Crawler(val startUrl: String, val threads: Int = 10, val threadsPerCore: Int = 1) {
+class Crawler(val startUrl: String,  val actorType: Class[_ <: HttpActor], val threads: Int = 10, val threadsPerCore: Int = 1) {
   val log: Logger = LoggerFactory.getLogger(classOf[Crawler])
 
   def crawl(): Unit = {
@@ -36,7 +36,7 @@ class Crawler(val startUrl: String, val threads: Int = 10, val threadsPerCore: I
 
     //construct dispatcher
     val requestId = UUID.randomUUID.toString
-    val dispatcher = system.actorOf(Props(new DispatchActor(requestId, classOf[DefaultHttpActor])), name = "dispatchActor")
+    val dispatcher = system.actorOf(Props(new DispatchActor(requestId, actorType)), name = "dispatchActor")
     dispatcher ! ReadUrl(startUrl)
     log.debug(s"Starting request $requestId")
 

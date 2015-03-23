@@ -1,5 +1,6 @@
 package com.monitorjbl
 
+import com.monitorjbl.crawler.actors.DefaultHttpActor
 import com.monitorjbl.crawler.{HttpOperations, Crawler}
 import org.junit.Test
 
@@ -7,7 +8,7 @@ class CrawlerTest {
 
   @Test
   def test(): Unit = {
-    val crawler = new Crawler("http://repo1.maven.org/maven2/org/apache/directory/api/api-all/", 5, 1)
+    val crawler = new Crawler("http://repo1.maven.org/maven2/org/apache/directory/api/api-all/", classOf[DefaultHttpActor], 5, 1)
     crawler.crawl()
   }
 
